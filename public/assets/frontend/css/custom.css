@@ -1,0 +1,11 @@
+/* your styles go here */
+
+.form-group label, a{
+    color: black;
+}
+.title{
+    color: black;
+    font-size: 35px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: bold;
+}
