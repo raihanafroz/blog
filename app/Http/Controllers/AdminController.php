@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
   public function index() {
+    $user = User::where('status', 'inactive')->where('type', 'admin')->first();
+    if (!$user->isActive()){
+      return $user;
+    }
     return view('admin.index');
   }
 

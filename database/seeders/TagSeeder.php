@@ -16,7 +16,7 @@ class TagSeeder extends Seeder
     public function run()
     {
 
-      $now = Carbon::now();
+      $now = now();
       $tags = [
         'Advertising',
         'Advice',

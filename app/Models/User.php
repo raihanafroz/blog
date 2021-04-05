@@ -55,4 +55,8 @@ class User extends Authenticatable
     public function getImageableAttributes() {
         return "test";
     }
+
+    public function isActive() {
+      return $this->status == 'active' ? true : false;
+    }
 }

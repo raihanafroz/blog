@@ -15,11 +15,6 @@
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/frontend/img/logo/favicon.png') }}">
 
-
-  <link href="{{ asset('assets/admin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-  <link href="{{ asset('assets/admin/css/icons.css') }}" rel="stylesheet" type="text/css">
-  <link href="{{ asset('assets/admin/css/style.css') }}" rel="stylesheet" type="text/css">
-
   <style>
     body{
       font-size: 14px;
@@ -32,6 +27,11 @@
     }
   </style>
   @yield('stylesheet')
+
+  <link href="{{ asset('assets/admin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ asset('assets/admin/css/icons.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ asset('assets/admin/css/style.css') }}" rel="stylesheet" type="text/css">
+
 
 
 </head>
@@ -92,14 +92,14 @@
             {{--</ul>--}}
           {{--</li>--}}
 
-          {{--<li class="has_sub">--}}
-            {{--<a class="waves-effect"><i class="mdi mdi-view-grid"></i><span> Product<span--}}
-                  {{--class="pull-right"><i class="mdi mdi-chevron-right"></i></span> </span></a>--}}
-            {{--<ul class="list-unstyled">--}}
-              {{--<li><a href="{{ route('admin.sub_category.add') }}">Add User</a></li>--}}
-              {{--<li><a href="{{ route('admin.sub_category.view') }}">View User</a></li>--}}
-            {{--</ul>--}}
-          {{--</li>--}}
+          <li class="has_sub">
+            <a class="waves-effect"><i class="mdi mdi-view-grid"></i><span> Post<span
+                  class="pull-right"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+            <ul class="list-unstyled">
+              <li><a href="{{ route('admin.post.create') }}">Create</a></li>
+              <li><a href="{{ route('admin.post.index') }}">List</a></li>
+            </ul>
+          </li>
 
 
 
@@ -238,12 +238,6 @@
 <script src="{{ asset('assets/admin/js/waves.js') }}"></script>
 <script src="{{ asset('assets/admin/js/jquery.nicescroll.js') }}"></script>
 <script src="{{ asset('assets/admin/js/jquery.scrollTo.min.js') }}"></script>
-
-
-<!-- App js -->
-<script src="{{ asset('assets/admin/js/app.js') }}"></script>
-@include('sweetalert::alert')
-
 <script>
   $(document).ready(function () {
     $.ajaxSetup({
@@ -253,6 +247,12 @@
     });
   })
 </script>
+
   @yield('script')
+
+<!-- App js -->
+<script src="{{ asset('assets/admin/js/app.js') }}"></script>
+@include('sweetalert::alert')
+
 </body>
 </html>

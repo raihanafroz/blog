@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -41,5 +42,7 @@ class UserSeeder extends Seeder
       ];
 
       DB::table('users')->insert($user);
+
+      User::factory(20)->create();
     }
 }
