@@ -81,17 +81,27 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-8">
+                  <div class="col-md-4">
                     <div class="form-group">
-                      <label class="control-label">Image<span class="text-danger">*</span></label>
-                      <input type="file" name="image" placeholder="Choose a Image" required
+                      <label class="control-label">Thumbnail<span class="text-danger">*</span></label>
+                      <input type="file" name="thumbnail" placeholder="Choose a Image" required
+                             class="form-control @error('thumbnail') is-invalid @enderror">
+                      @error('thumbnail')
+                      <strong class="text-danger">{{ $errors->first('thumbnail') }}</strong>
+                      @enderror
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label">Image<span class="text-danger"></span></label>
+                      <input type="file" name="image[]" multiple placeholder="Choose a Image"
                              class="form-control @error('image') is-invalid @enderror">
                       @error('image')
                       <strong class="text-danger">{{ $errors->first('image') }}</strong>
                       @enderror
                     </div>
                   </div>
-                  <div class="col-sm-4 text-center">
+                  <div class="col-md-2 text-center">
                     <div class="form-group">
                       <label for="" class="col-form-label">Status</label>
                       <div class="">

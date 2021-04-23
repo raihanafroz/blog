@@ -20,8 +20,9 @@ class PostController extends Controller
    */
   public function index()
   {
-    $posts = Post::with('category:id,u_id,name')->with('author:id,email,name,phone')
-      ->withCount('tags')->orderBy('created_at', 'DESC')->paginate(25);
+    $posts = Post::with('category:id,u_id,name', 'author:id,email,name,phone', 'media')
+      ->withCount('tags')->orderBy('created_at', 'DESC')->paginate(20);
+
 //      $posts = PostResource::collection($posts);
     return view('admin.post.list', compact('posts'));
   }
@@ -48,7 +49,6 @@ class PostController extends Controller
   {
     try {
       $data = $request->all();
-//      return $data;
       $post = new Post();
       $post->u_id = uniqid('POST-');
       $post->title = $data['title'];
@@ -57,7 +57,14 @@ class PostController extends Controller
       $post->body = $data['body'];
       $post->status = strtolower($data['status']);
       if ($post->save()) {
-        $post->addMediaFromRequest('image')->toMediaCollection();
+        $post->tags()->attach($data['tag']);
+        $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
+        if (isset($data['image'])) {
+          foreach ($data['image'] as $image) {
+            $post->addMedia($image)->toMediaCollection('images');
+          }
+        }
+//        return $post;
         return RedirectWithStatus::routeSuccess(
           'admin.post.create',
           '<strong>Congratulations!!! </strong> Post created successfully.'
@@ -65,7 +72,7 @@ class PostController extends Controller
       }
       return RedirectWithStatus::backWithInput('<strong>Sorry!!! </strong> Post create not possible.');
     } catch (\Exception $e) {
-//        return $e;
+//        return $e->getMessage();
       return RedirectWithStatus::backWithInputFromException();
     }
   }
@@ -99,11 +106,49 @@ class PostController extends Controller
    *
    * @param  \Illuminate\Http\Request $request
    * @param  \App\Models\Post $post
-   * @return \Illuminate\Http\Response
+   * @return RedirectWithStatus
    */
-  public function update(Request $request, Post $post)
+  public function update(PostRequest $request, Post $post)
   {
-    return $request;
+    try {
+      $data = $request->all();
+
+      $updateData = [
+        'title' => $data['title'],
+        'category_id' => $data['category'],
+        'body' => $data['body'],
+        'status' => strtolower($data['status']),
+      ];
+
+      if (!$post->update($updateData)) {
+        return RedirectWithStatus::backWithInput('<strong>Sorry!!! </strong> Post update not successful.');
+      }
+
+      $post->tags()->sync($data['tag']);
+
+      if ($request->hasFile('thumbnail')) {
+        $media = $post->getFirstMedia('thumbnail');
+        $id = $media->getAttribute('id');
+        $post->deleteMedia($id);
+
+        $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
+      }
+
+      if (isset($data['image']) && count($data['image']) > 0) {
+        foreach ($data['image'] as $image) {
+          $post->addMedia($image)->toMediaCollection('images');
+        }
+      }
+
+      return RedirectWithStatus::routeSuccess(
+        'admin.post.index',
+        '<strong>Congratulations!!! </strong> Post update successfully.'
+      );
+
+    } catch (\Exception $e) {
+//        return $e->getMessage();
+      return RedirectWithStatus::backWithInputFromException();
+    }
   }
 
   /**
@@ -114,6 +159,7 @@ class PostController extends Controller
    */
   public function destroy(Post $post)
   {
+    return $post;
     try {
       if ($post->delete()) {
         return 'success';
@@ -137,6 +183,24 @@ class PostController extends Controller
       if ($post->update(['status' => strtolower($data['status'])])) {
         return 'success';
       }
+    } catch (\Exception $e) {
+    }
+  }
+
+
+  /**
+   * delete the specified resource from storage.
+   *
+   * @param \App\Models\Post $post
+   * @param Request $request
+   * @return string
+   */
+  public function deletePostImage(Post $post, Request $request)
+  {
+    $data = $request->all();
+    try {
+      $post->deleteMedia($data['imageId']);
+      return 'success';
     } catch (\Exception $e) {
     }
   }

@@ -48,7 +48,8 @@
                   <tr class="@if(($loop->iteration % 2) == 0)gradeX @else gradeC @endif">
                     <td>{{ $loop->iteration }}</td>
                     <td class="text-capitalize">{{ $val->name }}</td>
-                    <td>{{ date('F d, Y h:i A', strtotime($val->created_at)) }}</td>
+{{--                    <td>{{ date('F d, Y h:i A', strtotime($val->created_at)) }}</td>--}}
+                    <td>@datetime($val->created_at)</td>
                     <td class="text-capitalize p-2">
                       <div class="onoffswitch">
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"

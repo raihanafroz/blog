@@ -59,4 +59,7 @@ class User extends Authenticatable
     public function isActive() {
       return $this->status == 'active' ? true : false;
     }
+     public function hasAccess($val) {
+      return $this->status == 'active' ? true : false;
+    }
 }

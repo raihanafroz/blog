@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -31,18 +32,21 @@ Route::get('/', function () {
 //  $user = \App\Models\User::first();
 //  return $user;
 
-//  $data = \App\Models\Category::where('id',1)->SetActive();
+//  $posts = \App\Models\Category::whereIn('id',[105,106])->get();
 //  dd($data);
 //    return $data;
 
 //  $posts =Post::with('tags:id,name')->withCount('tags')->get();//find(20);
-//  $posts =Post::with('author')->with('category')->with('tags')->withCount('tags')->/*get();//*/take(20)->get();
+  $posts =Post::with('author', 'category', 'tags', 'media')->withCount('tags')/*->whereIn('id', [99, 104, 105,  106, 107, 108])*/->get();//*/take(20)->get();
 //  return $posts;
-//  $data = \App\Http\Resources\PostResource::collection($posts);
+  $posts = \App\Http\Resources\PostResource::collection($posts);
 //  $data = new \App\Http\Resources\PostResource($posts);
 //  return $data;
 //  return url('');
-  return view('site.index');
+
+//  $data = Post::find(108);
+//  return ['thumbnail' => $data->getMedia('thumbnail')->, 'images' => $data->getMedia('images')];
+  return view('site.index', compact('posts'));
 })->name('home');
 
 Route::get('/clear-cache', function() {
@@ -50,8 +54,8 @@ Route::get('/clear-cache', function() {
 echo Artisan::output();
 });
 
-Route::match(['get', 'post'], '/login', [UserController::class, 'login'])->name('login');
-Route::match(['get', 'post'], '/register', [UserController::class, 'register'])->name('register');
+Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
+Route::match(['get', 'post'], '/register', [AuthController::class, 'register'])->name('register');
 
 
 Route::get('/xadmin', [AdminController::class, 'admin_login_view'])->name('admin.login');
@@ -77,6 +81,7 @@ Route::middleware(['auth', 'is_active'])->group(function () {
       Route::post('/update/user/status', [AdminController::class, 'ajax_update_user_status'])->name('update.user.status');
       Route::post('/update/categories/status/{category}', [CategoryController::class, 'updateStatus'])->name('update.categories.status');
       Route::post('/update/post/status/{post}', [PostController::class, 'updateStatus'])->name('update.post.status');
+      Route::delete('/delete/{post}/image', [PostController::class, 'deletePostImage'])->name('delete.post.image');
     });
 
     #Category

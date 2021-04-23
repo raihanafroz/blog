@@ -39,7 +39,7 @@
                   <th width="50">#</th>
                   <th>Name</th>
                   <th width="200">Created At</th>
-                  <th class="hidden-phone" width="40">Option</th>
+                  <th width="120">Option</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,6 +61,11 @@
                 @endforeach
                 </tbody>
               </table>
+              <div class="row">
+                <div class="col-sm-12 text-right">
+                  {{ $tags->links('vendor.pagination.custom') }}
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -110,7 +115,7 @@
 
   <script>
     $(document).ready(function () {
-      $('#datatable-buttons').DataTable();
+      // $('#datatable-buttons').DataTable();
 
       // var table = $('#datatable-buttons').DataTable({
       //   lengthChange: false,
@@ -121,12 +126,11 @@
       //   .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
 
 
-
       $(document).on('click', '.yes-btn', function () {
         var pid = $(this).data('id');
         var $this = $('.delete_' + pid)
         $.ajax({
-          url: "{{ route('admin.tag.destroy', '') }}"+'/'+pid,
+          url: "{{ route('admin.tag.destroy', '') }}" + '/' + pid,
           method: "delete",
           dataType: "html",
           success: function (data) {

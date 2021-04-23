@@ -13,6 +13,7 @@ class PostResource extends JsonResource
    * @return array
    */
   public function toArray($request){
+    $thumb = $this->getFirstMedia('thumbnail');
     return [
       'id' => $this->id,
       'u_id' => $this->u_id,
@@ -26,6 +27,9 @@ class PostResource extends JsonResource
       'tags' => $this->tags->sortBy('id')->pluck('name')->implode(','),
       'author' => $this->author->only('id', 'name', 'email'),
       'category' => $this->category->only('id', 'name'),
+//      'thumbnail' => isset($thumb) ? $thumb->getUrl() : null,
+      'thumbnail' => $this->getFirstMediaUrl('thumbnail'),
+      'images' => $this->getMedia('images'),
     ];
   }
 }

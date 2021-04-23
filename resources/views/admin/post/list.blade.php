@@ -38,6 +38,7 @@
                 <tr>
                   <th width="50">#</th>
                   <th>Title</th>
+                  <th width="40">Thumbnail</th>
                   <th>Category</th>
                   <th>Author</th>
                   <th width="200">Created At</th>
@@ -50,6 +51,8 @@
                   <tr class="@if(($loop->iteration % 2) == 0)gradeX @else gradeC @endif">
                     <td>{{ $loop->iteration }}</td>
                     <td class="text-capitalize">{{ Str::limit($val->title, 50) }}</td>
+                    <?php $thumb = $val->getFirstMedia('thumbnail'); ?>
+                    <td><img src="{{ isset($thumb) ? $thumb->getUrl() : null }}" alt="" width="50" height="50"></td>
                     <td class="text-capitalize">{{ $val->category->name }}</td>
                     <td class="text-capitalize">{{ $val->author->name }}</td>
                     <td>{{ date('F d, Y h:i A', strtotime($val->created_at)) }}</td>
@@ -174,6 +177,7 @@
           method: "delete",
           dataType: "html",
           success: function (data) {
+            console.log(data)
             if (data === "success") {
               $('#postDeleteModal').modal('hide')
               $this.closest('tr').css('background-color', 'red').fadeOut();
