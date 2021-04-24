@@ -127,10 +127,10 @@ class PostController extends Controller
       $post->tags()->sync($data['tag']);
 
       if ($request->hasFile('thumbnail')) {
-        $media = $post->getFirstMedia('thumbnail');
-        $id = $media->getAttribute('id');
-        $post->deleteMedia($id);
-
+        if ($media = $post->getFirstMedia('thumbnail')) {
+          $id = $media->getAttribute('id');
+          $post->deleteMedia($id);
+        }
         $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
       }
 

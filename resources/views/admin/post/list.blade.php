@@ -52,7 +52,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td class="text-capitalize">{{ Str::limit($val->title, 50) }}</td>
                     <?php $thumb = $val->getFirstMedia('thumbnail'); ?>
-                    <td><img src="{{ isset($thumb) ? $thumb->getUrl() : null }}" alt="" width="50" height="50"></td>
+                    <td class="p-2"><img src="{{ isset($thumb) ? $thumb->getUrl() : null }}" alt="" width="50" height="50"></td>
                     <td class="text-capitalize">{{ $val->category->name }}</td>
                     <td class="text-capitalize">{{ $val->author->name }}</td>
                     <td>{{ date('F d, Y h:i A', strtotime($val->created_at)) }}</td>
