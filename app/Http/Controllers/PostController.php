@@ -159,9 +159,8 @@ class PostController extends Controller
    */
   public function destroy(Post $post)
   {
-    return $post;
     try {
-      if ($post->delete()) {
+      if ($post->tags()->detach() && $post->delete()) {
         return 'success';
       }
     } catch (\Exception $e) {
