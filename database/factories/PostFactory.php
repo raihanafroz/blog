@@ -29,6 +29,9 @@ class PostFactory extends Factory
           'author_id' => User::where('type', 'author')->get()->random()->id,
           'category_id' => Category::all()->random()->id,
           'title' => $this->faker->unique()->sentence,
+          'like' => $this->faker->numberBetween(1, 50000),
+          'dislike' => $this->faker->numberBetween(1, 50000),
+          'views' => $this->faker->numberBetween(1, 50000),
           'body' => $this->faker->paragraph,
           'status' => Arr::random(['active', 'inactive'])
         ];
